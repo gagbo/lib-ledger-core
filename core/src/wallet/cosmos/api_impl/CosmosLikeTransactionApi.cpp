@@ -299,12 +299,16 @@ namespace ledger {
                         return amountObject;
                     };
 
-                    // Technically the feeArray can contain all fee.amount[i] ;
-                    // But Cosmoshub only accepts uatom as a fee denom so the
-                    // array is always length 1 for the time being
-                    auto feeAmountObj = getAmountObject(_txData.fee.amount[0].denom, _txData.fee.amount[0].amount);
-                    feeArray.PushBack(feeAmountObj, allocator);
-                    feeObject.AddMember(kAmount, feeArray, allocator);
+                    if (std::stoi(_txData.fee.amount[0].amount) != 0) {
+                        // Technically the feeArray can contain all fee.amount[i] ;
+                        // But Cosmoshub only accepts uatom as a fee denom so the
+                        // array is always length 1 for the time being
+                        auto feeAmountObj = getAmountObject(_txData.fee.amount[0].denom, _txData.fee.amount[0].amount);
+                        feeArray.PushBack(feeAmountObj, allocator);
+                        feeObject.AddMember(kAmount, feeArray, allocator);
+                    } else {
+                        feeObject.AddMember(kAmount, Value(), allocator);
+                    }
                 }
                 txObject.AddMember(kFee, feeObject, allocator);
 
