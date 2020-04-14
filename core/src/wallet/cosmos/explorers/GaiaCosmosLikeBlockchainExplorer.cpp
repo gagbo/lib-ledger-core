@@ -335,7 +335,7 @@ namespace ledger {
             std::vector<FuturePtr<cosmos::TransactionsBulk>> address_transactions;
             std::transform(addresses.begin(), addresses.end(), std::back_inserter(address_transactions),
                            [&] (const auto& address) {
-                               return getTransactionsForAddress(address, fromBlockHeight);
+                               return this->getTransactionsForAddress(address, fromBlockHeight);
                            });
             return async::sequence(getContext(), address_transactions)
                 .flatMapPtr<cosmos::TransactionsBulk>(getContext(), [](const auto& vector_of_bulks) {
