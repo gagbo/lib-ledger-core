@@ -3,6 +3,7 @@ project(sqlcipher)
 add_library(sqlcipher STATIC sqlite3.c sqlite3.h sqlite3ext.h)
 
 target_link_libraries(sqlcipher PUBLIC ${CMAKE_DL_LIBS})
+target_compile_options(sqlcipher PRIVATE "-DSQLITE_HAS_CODEC")
 
 if (SYS_OPENSSL)
     target_link_libraries(sqlcipher PUBLIC OpenSSL::Crypto)
